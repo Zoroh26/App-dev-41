@@ -15,6 +15,8 @@ Once these inputs are taken the application works in the following way->
 4) They complete the tasks they get coins.
 5) With a required number of coins user can earn badges.
 
+Languages used - dart
+
 
 Creators--
 Bhuvan Shridhar, Rohith P, Madhur Parsania.
