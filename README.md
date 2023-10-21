@@ -1,16 +1,17 @@
-# organizeme
+The name of the application is "OrgranizeMe",it is a task managment app.
 
-A new Flutter project.
+Aim of this project is to make the user more productive by helping them finish their task efficiently with less effort.
 
-## Getting Started
+Following are the inputs that will be take from the user->
 
-This project is a starting point for a Flutter application.
+All the tasks to be done.
+Average time to finsh each task.
+Importance of tasks.
+Once these inputs are taken the application works in the following way->
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+It arranges the task in ascending order based on the average time or the assumed time.
+If there is any task that is important then it will be on top of priority list.
+Between each tasks a timer will be set of 25 min, after which a 5min-10min break will be given.
+They complete the tasks they get coins.
+With a required number of coins user can earn badges.
+Creators-- Bhuvan Shridhar, Rohith P, Madhur Parsania.
