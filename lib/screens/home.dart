@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../model/todo.dart';
 import '../constants/colors.dart';
 import '../widgets/todo_item.dart';
@@ -12,18 +11,36 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final todosList = ToDo.todoList();
+  final List<ToDo> todosList = [];
   List<ToDo> _foundToDo = [];
   final _todoController = TextEditingController();
+  int _totalCoins = 0;
 
   @override
   void initState() {
     _foundToDo = todosList;
     super.initState();
   }
+  String determineBadge(int totalCoins) {
+  if (totalCoins >= 0 && totalCoins < 10) {
+    return 'bronze.png'; // Your bronze badge image
+  } else if (totalCoins >= 10 && totalCoins < 20) {
+    return 'silver.png'; // Your silver badge image
+  } else if (totalCoins >= 20 && totalCoins < 30) {
+    return 'gold.png'; // Your gold badge image
+  } else {
+    return 'platinum.png'; // Your platinum badge image (for higher ranges)
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
+    for (ToDo todo in todosList) {
+    if (todo.isDone) {
+      _totalCoins += todo.coinsAwarded;
+    }
+  }
     return Scaffold(
       backgroundColor: tdBGColor,
       appBar: _buildAppBar(),
@@ -129,10 +146,21 @@ class _HomeState extends State<Home> {
   }
 
   void _handleToDoChange(ToDo todo) {
-    setState(() {
-      todo.isDone = !todo.isDone;
-    });
-  }
+  setState(() {
+    todo.isDone = !todo.isDone;
+    if (todo.isDone) {
+      todo.coinsAwarded = 1;
+    }else{
+      todo.coinsAwarded = 0;
+    }
+    if(todosList.isEmpty){
+      _totalCoins=0;
+    }else{
+    _totalCoins=todosList.fold<int>(0,(total,todo)=>total+(todo.isDone ? todo.coinsAwarded : 0));
+    } 
+  });
+}
+
 
   void _deleteToDoItem(String id) {
     setState(() {
@@ -196,24 +224,70 @@ class _HomeState extends State<Home> {
   }
 
   AppBar _buildAppBar() {
-    return AppBar(
-      backgroundColor: tdBGColor,
-      elevation: 0,
-      title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+  final badgeImage = determineBadge(_totalCoins);
+  return AppBar(
+    backgroundColor: tdBGColor,
+    elevation: 0,
+    title: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
         Icon(
           Icons.menu,
           color: tdBlack,
           size: 30,
         ),
+        if (badgeImage != null)
+          Container(
+            height: 40,
+            width: 80, // Adjust the width as needed
+            child: Align(
+              alignment: Alignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Your badge:',
+                    style: TextStyle(
+                      color: tdBlack,
+                      fontSize: 13,
+                    ),
+                  ),
+                  SizedBox(width:1),
+                  Image.asset(
+                    'assets/images/$badgeImage',
+                    width:60,
+                    height:60,
+                  ),
+                ],
+              ),
+            ),
+          ),
         Container(
           height: 40,
           width: 40,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Image.asset('assets/images/Screenshot (247) need.jpeg'),
+          padding: EdgeInsets.all(4),
+          child: Row(
+            children: [
+              Image.asset(
+                'assets/images/coin.png',
+                color: tdBlack,
+                width: 24,
+                height: 24,
+              ),
+              SizedBox(width: 7),
+              Text(
+                '$_totalCoins',
+                style: TextStyle(
+                  color: tdBlack,
+                  fontSize: 15,
+                ),
+              ),
+            ],
           ),
         ),
-      ]),
-    );
-  }
+      ],
+    ),
+  );
+}
+
 }
